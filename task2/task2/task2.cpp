@@ -25,7 +25,7 @@ Node* CreateNode(string name, int numCount, string phNum[]) {
 }
 
 void Insert(Node* person, int numCount, string phNum[], string name) {
-    if (person->name[0] > name[0]) {
+    if (person->name > name) {
         if (person->left != nullptr) {
             Insert(person->left, numCount, phNum, name);
         }
@@ -46,10 +46,10 @@ void Insert(Node* person, int numCount, string phNum[], string name) {
 
 
 Node* FindNode(Node* person, string name) {
-    if (person == nullptr || person->name[0] == name[0]) {
+    if (person == nullptr || person->name == name) {
         return person;
     }
-    if (name[0] > person->name[0]) {
+    if (name > person->name) {
         return FindNode(person->right, name);
     }
     else {
@@ -57,13 +57,13 @@ Node* FindNode(Node* person, string name) {
     }
 }
 
-/*
-void DeleteNode(Node* root, int value) {
+
+void DeleteNode(Node* root, string name) {
     Node* curr = root;
     Node* parent = NULL;
-    while (curr != NULL && curr->koki != value) {
+    while (curr != NULL && curr->name != name) {
         parent = curr;
-        if (curr->koki > value) {
+        if (curr->name > name) {
             curr = curr->left;
         }
         else {
@@ -110,12 +110,12 @@ void DeleteNode(Node* root, int value) {
         while (successor->left != NULL) {
             successor = successor->left;
         }
-        int successorValue = successor->koki;
-        DeleteNode(root, successorValue);
-        curr->koki = successorValue;
+        string successorName = successor->name;
+        DeleteNode(root, successorName);
+        curr->name = successorName;
     }
 }
-*/
+
 
 
 
@@ -165,13 +165,23 @@ void Lobby(Node* root) {
         cin >> find;
         Node* info = new Node;
         info = FindNode(root, find);
-        cout << "Name: " << info->name << endl;
-        for (int i = 0; i < info->numCount; i++) {
-            cout << "Phone number " << i << ":" << info->phNum[i]<< endl;
+        if (info == NULL) {
+            cout << "No such person in contacts. " << endl;
+        }
+        else {
+            cout << "Name: " << info->name << endl;
+            for (int i = 0; i < info->numCount; i++) {
+                cout << "Phone number " << i + 1 << ":" << info->phNum[i] << endl;
+            }
         }
         Lobby(root);
     }
     else if (operation == 3) {
+        cout << "Which person do you want to delete? " << endl;
+        string name = "";
+        cin >> name;
+        DeleteNode(root, name);
+        Lobby(root);
         
     }
     else if (operation == 4) {
