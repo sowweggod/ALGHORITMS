@@ -1,20 +1,190 @@
-﻿// task2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+﻿#include <iostream>
+#include <string>
+using namespace std;
 
-#include <iostream>
+struct Node {
+    string name;
+    int numCount;
+    string* phNum = new string [numCount];
+    Node* right;
+    Node* left;
+};
 
-int main()
-{
-    std::cout << "Hello World!\n";
+Node* CreateNode(string name, int numCount, string phNum[]) {
+    Node* data = new Node;
+    data->name = name;
+    data->numCount = numCount;
+    for (int i = 0; i < numCount; i++) {
+        data->phNum[i] = phNum[i];
+    }
+    data->right = nullptr;
+    data->left = nullptr;
+
+    return data;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void Insert(Node* person, int numCount, string phNum[], string name) {
+    if (person->name[0] > name[0]) {
+        if (person->left != nullptr) {
+            Insert(person->left, numCount, phNum, name);
+        }
+        else {
+            person->left = CreateNode(name, numCount, phNum);
+        }
+    }
+    else {
+        if (person->right != nullptr) {
+            Insert(person->right, numCount, phNum, name);
+        }
+        else {
+            person->right = CreateNode(name, numCount, phNum);
+        }
+    }
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+
+Node* FindNode(Node* person, string name) {
+    if (person == nullptr || person->name[0] == name[0]) {
+        return person;
+    }
+    if (name[0] > person->name[0]) {
+        return FindNode(person->right, name);
+    }
+    else {
+        return FindNode(person->left, name);
+    }
+}
+
+/*
+void DeleteNode(Node* root, int value) {
+    Node* curr = root;
+    Node* parent = NULL;
+    while (curr != NULL && curr->koki != value) {
+        parent = curr;
+        if (curr->koki > value) {
+            curr = curr->left;
+        }
+        else {
+            curr = curr->right;
+        }
+    }
+    if (curr == NULL) {
+        return;
+    }
+
+    bool isLeftChild = (parent != NULL && curr == parent->left);
+
+    if (curr->left == nullptr && curr->right == nullptr) {
+        if (parent == NULL) {
+            root = NULL;
+        }
+        else if (isLeftChild) {
+            parent->left = NULL;
+        }
+        else {
+            parent->right = NULL;
+        }
+
+        delete curr;
+
+    }
+    else if (curr->left == nullptr || curr->right == nullptr) {
+        Node* child = (curr->left != NULL) ? curr->left : curr->right;
+
+        if (parent == NULL) {
+            root = child;
+        }
+        else if (isLeftChild) {
+            parent->left = child;
+        }
+        else {
+            parent->right = child;
+        }
+
+        delete curr;
+    }
+    else {
+        Node* successor = curr->right;
+        while (successor->left != NULL) {
+            successor = successor->left;
+        }
+        int successorValue = successor->koki;
+        DeleteNode(root, successorValue);
+        curr->koki = successorValue;
+    }
+}
+*/
+
+
+
+void Lobby(Node* root) {
+    cout << "Which operation do you want to do? " << endl;
+    cout << "1. Add a person. " << endl;
+    cout << "2. Find person." << endl;
+    cout << "3. Delete person. " << endl;
+    cout << "4. Exit. " << endl;
+
+    int operation = 0;
+
+    cin >> operation;
+    
+
+    if (operation == 1) {
+        cout << "How many people do you want to add? " << endl;
+        int people = 0;
+        cin >> people;
+        for (int i = 0; i < people; i++) {
+            string name = "";
+            cout << "Enter person's name: " << endl;
+            cin >> name;
+            cout << "How many phone numbers does person have? " << endl;
+            int numCount = 0;
+            cin >> numCount;
+            
+            string* phNum = new string[numCount];
+            cout << "Enter numbers: " << endl;
+
+            for (int j = 0; j < numCount; j++) {
+                cin >> phNum[j];
+            }
+            if (i == 0 && root != NULL){
+                root = CreateNode(name, numCount, phNum);
+            }
+            else {
+                Insert(root, numCount, phNum, name);
+            }
+            cout << "Person was added. " << endl;
+        }
+        Lobby(root);
+    }
+    else if (operation == 2) {
+        cout << "Enter person's name: " << endl;
+        string find = "";
+        cin >> find;
+        Node* info = new Node;
+        info = FindNode(root, find);
+        cout << "Name: " << info->name << endl;
+        for (int i = 0; i < info->numCount; i++) {
+            cout << "Phone number " << i << ":" << info->phNum[i];
+        }
+        Lobby(root);
+    }
+    else if (operation == 3) {
+        
+    }
+    else if (operation == 4) {
+        
+    }
+    else {
+        cout << "No such operation. " << endl;
+        Lobby(root);
+    }
+}
+
+
+int main() {
+    Node* root = new Node;
+    Lobby(root);
+   
+}
