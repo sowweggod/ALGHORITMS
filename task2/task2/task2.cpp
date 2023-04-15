@@ -4,7 +4,7 @@ using namespace std;
 
 struct Node {
     string name;
-    int numCount;
+    int numCount = 0;
     string* phNum = new string [numCount];
     Node* right;
     Node* left;
@@ -14,6 +14,7 @@ Node* CreateNode(string name, int numCount, string phNum[]) {
     Node* data = new Node;
     data->name = name;
     data->numCount = numCount;
+    data->phNum = new string[numCount];
     for (int i = 0; i < numCount; i++) {
         data->phNum[i] = phNum[i];
     }
@@ -166,7 +167,7 @@ void Lobby(Node* root) {
         info = FindNode(root, find);
         cout << "Name: " << info->name << endl;
         for (int i = 0; i < info->numCount; i++) {
-            cout << "Phone number " << i << ":" << info->phNum[i];
+            cout << "Phone number " << i << ":" << info->phNum[i]<< endl;
         }
         Lobby(root);
     }
