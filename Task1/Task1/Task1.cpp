@@ -135,9 +135,16 @@ int main() {
     cout << "Tree: ";
     PrintTree(root);
     cout << endl;
-    cout << "Found node (12): ";
-    Node* found = FindNode(root, 12);
-    cout << found->koki << " " << found->left << " " << found->right << endl;
+    cout << "Found node (36): ";
+    Node* found = FindNode(root, 36);
+    if(found != NULL)
+    {
+        cout << found->koki << " " << found->left << " " << found->right << endl;
+    }
+    else
+    {
+        cout << "This element does not exist" << endl;
+    }
     cout << "Depth of tree: ";
     cout << DepthTree(root) << endl;
     DeleteNode(root, 11);
