@@ -1,20 +1,79 @@
-﻿// Task 3.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+﻿#include <iostream>
+using namespace std;
 
-#include <iostream>
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+};
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int height(Node* node) {
+    if (!node) {
+        return 0;
+    }
+    else {
+        int leftHeight = height(node->left);
+        int rightHeight = height(node->right);
+        if (leftHeight > rightHeight) {
+            return (leftHeight + 1);
+        }
+        else {
+            return (rightHeight + 1);
+        }
+    }
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+int balanceFactor(Node* node) {
+    if (!node) {
+        return 0;
+    }
+    else {
+        int leftHeight = height(node->left);
+        int rightHeight = height(node->right);
+        return (leftHeight - rightHeight);
+    }
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+Node* newNode(int data) {
+    Node* node = new Node();
+    node->data = data;
+    node->left = nullptr;
+    node->right = nullptr;
+    return node;
+}
+
+Node* insert(Node* node, int data) {
+    if (!node) {
+        return newNode(data);
+    }
+    else {
+        if (data <= node->data) {
+            node->left = insert(node->left, data);
+        }
+        else {
+            node->right = insert(node->right, data);
+        }
+        return node;
+    }
+}
+
+void printBalanceFactors(Node* node) {
+    if (node) {
+        printBalanceFactors(node->left);
+        cout << "Balance factor for node " << node->data << " is " << balanceFactor(node) << endl;
+        printBalanceFactors(node->right);
+    }
+}
+
+int main() {
+    Node* root = nullptr;
+    root = insert(root, 4);
+    insert(root, 2);
+    insert(root, 1);
+    insert(root, 3);
+    insert(root, 6);
+    insert(root, 5);
+    insert(root, 7);
+    printBalanceFactors(root);
+    return 0;
+}
