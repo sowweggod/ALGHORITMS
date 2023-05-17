@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Task 3.cpp">
+    <ClCompile Include="Task 1%282%29.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
